@@ -1,0 +1,90 @@
+Aim
+
+To enable versioning in Amazon S3 and configure Cross-Region Replication between two S3 buckets in different AWS regions.
+
+Part A — Enabling Versioning
+Procedure
+Step 1: Open S3 Bucket
+Go to S3 Dashboard.
+Select existing bucket.
+Step 2: Enable Versioning
+Open:
+Properties tab
+Scroll to:
+Bucket Versioning
+Click Edit.
+Select:
+Enable
+Save changes.
+Step 3: Upload Object
+
+Upload file:
+
+report.pdf
+Step 4: Modify and Re-upload Same File
+Edit file locally.
+Upload same filename again.
+Step 5: Delete Object
+Select uploaded object.
+Click Delete.
+Observation
+Version IDs generated automatically.
+Older versions preserved after re-upload.
+Delete marker created instead of permanent deletion.
+Result
+
+Successfully enabled versioning in S3 and verified object version preservation and recovery functionality.
+
+Part B — Cross-Region Replication (CRR)
+Procedure
+Step 1: Create Destination Bucket
+Go to S3 → Create Bucket.
+
+Enter bucket name:
+
+dest-crr-bucket
+Choose different AWS region.
+Create bucket.
+Step 2: Enable Versioning on Destination Bucket
+Open destination bucket.
+Go to:
+Properties → Bucket Versioning
+Enable versioning.
+Step 3: Configure Replication Rule
+Open source bucket.
+Go to:
+Management tab
+Click:
+Replication Rules → Create Replication Rule
+Step 4: Configure Rule Settings
+
+Rule name:
+
+academy-crr-rule
+Status:
+Enabled
+Scope:
+Apply to all objects
+Step 5: Choose Destination Bucket
+Select:
+Another Bucket
+Choose destination bucket.
+Select AWS-managed/default IAM role.
+Step 6: Save Replication Rule
+Enable replication for:
+New Objects
+Save configuration.
+Step 7: Verify Replication
+
+Upload file to source bucket:
+
+image.png
+Open destination bucket.
+Verify replicated object appears automatically.
+Observation
+Source and destination buckets created successfully.
+Replication rule configured.
+Newly uploaded objects replicated automatically to another AWS region.
+Result
+
+Successfully configured Cross-Region Replication between two S3 buckets in different AWS regions.
