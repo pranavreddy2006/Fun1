@@ -1,0 +1,68 @@
+Procedure
+Step 1: Log in to AWS Console
+Open AWS Management Console.
+Go to Amazon Web Services EC2 Dashboard.
+Click Launch Instance.
+Step 2: Configure Linux EC2 Instance
+Enter instance name.
+Choose an Ubuntu/Linux AMI.
+Select instance type (t2.micro for Free Tier).
+Create or select a key pair.
+Download the .pem key file safely.
+Under Network Settings:
+Allow SSH traffic
+Port: 22
+Source: My IP
+Click Launch Instance.
+Step 3: Verify Security Group
+Go to:
+EC2 → Security Groups
+Open inbound rules.
+Ensure the following rule exists:
+Type	Protocol	Port	Source
+SSH	TCP	22	My IP
+Step 4: Install PuTTY and PuTTYgen
+Download and install:
+PuTTY
+PuTTYgen
+Open PuTTYgen.
+Step 5: Convert .pem File to .ppk
+In PuTTYgen click Load.
+Change file type to All Files.
+Select the downloaded .pem key.
+Click Open.
+Click Save Private Key.
+Save file as .ppk.
+Step 6: Connect Using PuTTY
+Open PuTTY.
+In Session:
+Enter EC2 Public DNS/IP.
+Navigate:
+Connection → SSH → Auth → Credentials
+Click Browse.
+Select .ppk file.
+Click Open.
+Step 7: Login to EC2
+Accept security warning.
+Login username:
+ubuntu (Ubuntu)
+ec2-user (Amazon Linux)
+Terminal opens successfully.
+Step 8: Verify Connection
+
+Run:
+
+whoami
+
+Expected Output:
+
+ubuntu
+Observation
+EC2 instance launched successfully.
+Security group allowed SSH access on port 22.
+.pem key converted to .ppk.
+PuTTY established secure SSH connection.
+Linux terminal accessed successfully.
+Result
+
+Successfully created a Linux EC2 instance and connected securely using PuTTY and SSH authentication.
