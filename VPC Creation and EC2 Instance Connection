@@ -1,0 +1,143 @@
+Aim
+
+To create a custom Virtual Private Cloud (VPC) with public and private subnets, configure routing and security, launch EC2 instances, and test secure connectivity within the VPC environment.
+
+Procedure
+Step 1: Create the VPC
+Login to Amazon Web Services AWS Management Console.
+Go to:
+Services → VPC
+Click Create VPC.
+Select:
+VPC only
+Enter:
+Name: Custom-VPC
+
+IPv4 CIDR Block:
+
+10.0.0.0/16
+Click Create VPC.
+Step 2: Create Public and Private Subnets
+Create Public Subnet
+Go to:
+Subnets → Create Subnet
+Select created VPC.
+Configure:
+Subnet Name: Public-Subnet
+Availability Zone: AZ-A
+
+CIDR Block:
+
+10.0.1.0/24
+Click Create Subnet.
+Create Private Subnet
+Again click Create Subnet.
+Configure:
+Subnet Name: Private-Subnet
+Availability Zone: AZ-A
+
+CIDR Block:
+
+10.0.2.0/24
+Click Create Subnet.
+Step 3: Create and Attach Internet Gateway
+Go to:
+Internet Gateways
+Click Create Internet Gateway.
+
+Enter Name:
+
+Custom-IGW
+Click Create Internet Gateway.
+Select created IGW.
+Click:
+Actions → Attach to VPC
+Select Custom-VPC.
+Click Attach.
+Step 4: Create Route Tables
+Create Public Route Table
+Go to:
+Route Tables → Create Route Table
+Configure:
+Name: Public-RT
+Select Custom-VPC
+Click Create Route Table.
+Add Internet Route
+Open Public-RT.
+Go to:
+Routes → Edit Routes
+Add route:
+Destination	Target
+0.0.0.0/0	Internet Gateway
+Save changes.
+Associate Public Subnet
+Go to:
+Subnet Associations
+Click Edit Subnet Associations.
+Select Public-Subnet.
+Save.
+Create Private Route Table
+Create another route table:
+Name: Private-RT
+Associate it with:
+Private-Subnet
+Keep only default local route.
+Step 5: Enable Auto-Assign Public IP
+Open:
+Subnets
+Select Public-Subnet.
+Click:
+Actions → Edit Subnet Settings
+Enable:
+Auto-assign Public IPv4 Address
+Save changes.
+Step 6: Configure Security Groups
+Go to:
+Security Groups → Create Security Group
+Configure:
+Name: Web-SG
+Select Custom-VPC
+Add Inbound Rules
+Type	Port	Source
+SSH	22	My IP
+HTTP	80	Anywhere
+HTTPS	443	Anywhere
+Save security group.
+Step 7: Launch EC2 Instances
+Launch Public EC2
+Go to EC2 → Launch Instance.
+Configure:
+Select Amazon Linux/Ubuntu AMI
+Choose t2.micro
+Select Public-Subnet
+Enable Public IP
+Attach Web-SG.
+Launch instance.
+Launch Private EC2
+Launch another EC2 instance.
+Select:
+Private-Subnet
+Disable Public IP.
+Attach appropriate security group.
+Launch instance.
+Step 8: Test the Setup
+Test Public EC2
+SSH into Public EC2:
+ssh -i key.pem ec2-user@public-ip
+Verify internet access:
+ping google.com
+Test Private EC2
+Verify:
+No direct internet access
+No direct inbound SSH from internet
+If NAT Gateway exists, test outbound internet connectivity.
+Observation
+Custom VPC created successfully.
+Public and private subnets configured.
+Internet Gateway attached to VPC.
+Route tables associated correctly.
+Public EC2 accessed internet successfully.
+Private EC2 remained isolated from direct internet access.
+Result
+
+Successfully created a custom VPC with public and private subnets, configured routing and security, launched EC2 instances, and verified secure connectivity within the AWS VPC environment.
