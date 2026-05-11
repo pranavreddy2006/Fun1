@@ -1,0 +1,182 @@
+Aim
+To create a snapshot of an EBS volume, copy it to another AWS region, create a new volume from the snapshot, and attach it to another EC2 instance. 
+
+Procedure
+Step 1: Create Snapshot
+
+
+Go to EC2 Dashboard.
+
+
+Open:
+
+
+Volumes
+
+
+
+
+Select EBS volume.
+
+
+Click:
+
+
+Actions → Create Snapshot
+
+
+
+
+Enter name and description.
+
+
+Click Create Snapshot.
+
+
+
+Step 2: Copy Snapshot to Another Region
+
+
+Open:
+
+
+Snapshots
+
+
+
+
+Select created snapshot.
+
+
+Click:
+
+
+Actions → Copy Snapshot
+
+
+
+
+Choose destination AWS region.
+
+
+Click Copy Snapshot.
+
+
+
+Step 3: Monitor Snapshot Status
+
+
+Wait until snapshot state changes:
+
+
+Pending → Completed
+
+
+
+
+
+Step 4: Switch AWS Region
+
+
+Use region selector at top-right.
+
+
+Change to destination region.
+
+
+
+Step 5: Create Volume from Snapshot
+
+
+Open:
+
+
+Snapshots
+
+
+
+
+Select copied snapshot.
+
+
+Click:
+
+
+Actions → Create Volume
+
+
+
+
+Configure:
+
+
+Volume type
+
+
+Size
+
+
+Availability Zone
+
+
+
+
+Click Create Volume.
+
+
+
+Step 6: Attach Volume to EC2
+
+
+Go to:
+
+
+Volumes
+
+
+
+
+Select created volume.
+
+
+Click:
+
+
+Actions → Attach Volume
+
+
+
+
+Choose EC2 instance.
+
+
+Enter device name:
+/dev/xvdf
+
+
+Click Attach.
+
+
+
+Step 7: Verify Volume in EC2
+SSH into instance and run:
+lsblk
+
+Observation
+
+
+Snapshot created successfully.
+
+
+Snapshot copied to another AWS region.
+
+
+New volume created from snapshot.
+
+
+Volume attached successfully to EC2 instance in destination region. 
+
+
+
+Result
+Successfully created a snapshot of an EBS volume, copied it to another AWS region, created a new volume from the snapshot, and attached it to another EC2 instance. 
