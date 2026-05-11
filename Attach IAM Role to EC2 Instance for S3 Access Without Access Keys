@@ -1,0 +1,174 @@
+# Experiment: Attach IAM Role to EC2 Instance for S3 Access Without Access Keys
+
+## Aim
+
+To create and attach an IAM Role to an EC2 instance for secure access to Amazon S3 without using access keys.
+
+---
+
+# Procedure
+
+## Step 1: Create IAM Role
+
+1. Login to Amazon Web Services AWS Management Console.
+2. Open:
+
+   * IAM Console
+3. Go to:
+
+   * Roles
+4. Click:
+
+   * Create Role
+
+---
+
+# Step 2: Select Trusted Entity
+
+1. Under Trusted Entity Type:
+
+   * Select:
+
+     ```text
+     AWS Service
+     ```
+2. Under Use Case:
+
+   * Select:
+
+     ```text
+     EC2
+     ```
+3. Click:
+
+   * Next
+
+---
+
+# Step 3: Attach Permissions Policy
+
+1. Search for policy:
+
+```text id="3t23ob"
+AmazonS3FullAccess
+```
+
+2. Select the policy.
+3. Click:
+
+   * Next
+
+---
+
+# Step 4: Name and Create Role
+
+1. Enter Role Name:
+
+```text id="b7y0mt"
+EC2-S3-Role
+```
+
+2. Click:
+
+   * Create Role
+
+IAM Role is now created successfully.
+
+---
+
+# Step 5: Attach IAM Role to EC2 Instance
+
+1. Open:
+
+   * EC2 Dashboard
+2. Select running EC2 instance.
+3. Click:
+
+   * Actions → Security → Modify IAM Role
+4. Select:
+
+```text id="8g9q0w"
+EC2-S3-Role
+```
+
+5. Click:
+
+   * Update IAM Role
+
+---
+
+# Step 6: Connect to EC2 Instance
+
+Use SSH:
+
+```bash id="h4q5v7"
+ssh -i key.pem ec2-user@public-ip
+```
+
+or for Ubuntu:
+
+```bash id="x2n1k9"
+ssh -i key.pem ubuntu@public-ip
+```
+
+---
+
+# Step 7: Verify S3 Access Without Access Keys
+
+Run:
+
+```bash id="y6m3r2"
+aws s3 ls
+```
+
+Expected Result:
+
+* S3 buckets are listed successfully.
+
+---
+
+# Step 8: Verify Restricted EC2 Access
+
+Run:
+
+```bash id="l9t5z4"
+aws ec2 describe-instances
+```
+
+Expected Result:
+
+```text id="l0v6b1"
+UnauthorizedOperation
+```
+
+because the role only contains S3 permissions.
+
+---
+
+# Step 9: Verify Temporary Credentials
+
+Run:
+
+```bash id="m3f2s8"
+curl http://169.254.169.254/latest/meta-data/iam/security-credentials/
+```
+
+Expected Result:
+
+* Displays attached IAM role name.
+
+---
+
+# Observation
+
+* IAM role created successfully.
+* Role attached to EC2 instance successfully.
+* EC2 instance accessed S3 without using access keys.
+* Temporary credentials were automatically provided by IAM Role.
+* EC2 API access was denied because no EC2 permissions were attached.
+
+---
+
+# Result
+
+Successfully created and attached an IAM Role to an EC2 instance, enabling secure Amazon S3 access without storing AWS access keys inside the instance.
