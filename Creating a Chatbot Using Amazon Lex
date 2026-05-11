@@ -1,0 +1,326 @@
+# Experiment: Creating a Chatbot Using Amazon Lex
+
+## Aim
+
+To create and configure a chatbot using Amazon Lex for hotel booking by implementing intents, slots, conditional branching, custom slot types, and conversational responses. 
+
+---
+
+# Procedure
+
+## Step 1: Open Amazon Lex
+
+1. Login to Amazon Web Services AWS Management Console.
+2. Search:
+
+   ```text
+   Amazon Lex
+   ```
+3. Open Amazon Lex.
+4. Click:
+
+   * Create Bot
+
+---
+
+# Step 2: Create Bot
+
+1. Select:
+
+   * Create a blank bot
+2. Configure:
+
+| Field    | Value           |
+| -------- | --------------- |
+| Bot Name | HotelBookingBot |
+
+3. IAM Role:
+
+   * Create new role
+4. Select Language:
+
+   ```text
+   English
+   ```
+5. Optionally choose voice.
+6. Click:
+
+   * Done
+
+---
+
+# Step 3: Create Intent
+
+1. Go to:
+
+   * Intents
+2. Click:
+
+   * Create Intent
+3. Configure:
+
+| Field       | Value     |
+| ----------- | --------- |
+| Intent Name | BookHotel |
+
+4. Save intent.
+
+---
+
+# Step 4: Add Sample Utterances
+
+Add user queries such as:
+
+```text id="8nsf7v"
+I want to book a hotel
+Book a room
+Reserve hotel
+I need a room
+```
+
+These are example utterances for intent recognition. 
+
+---
+
+# Step 5: Create Age Slot
+
+1. Click:
+
+   * Add Slot
+2. Configure:
+
+| Field     | Value             |
+| --------- | ----------------- |
+| Slot Name | age               |
+| Slot Type | AMAZON.Number     |
+| Prompt    | What is your age? |
+
+3. Mark slot as:
+
+   ```text
+   Required
+   ```
+
+---
+
+# Step 6: Add Conditional Branching
+
+1. Open:
+
+   * Intent → Slots → Advanced Options
+2. Scroll to:
+
+   * Slot Capture → Success Response → Conditional Branching
+3. Click:
+
+   * Add Condition
+
+---
+
+## Configure Condition
+
+| Condition     | Response                               |
+| ------------- | -------------------------------------- |
+| If {age} < 18 | You are not eligible for hotel booking |
+
+Save condition.
+
+---
+
+# Step 7: Create Location Slot
+
+1. Add another slot.
+
+| Field     | Value                   |
+| --------- | ----------------------- |
+| Slot Name | location                |
+| Slot Type | AMAZON.City             |
+| Prompt    | Which city do you want? |
+
+2. Mark as required.
+3. Save.
+
+---
+
+# Step 8: Create Check-in Date Slot
+
+1. Add slot.
+
+| Field     | Value                       |
+| --------- | --------------------------- |
+| Slot Name | checkin                     |
+| Slot Type | AMAZON.Date                 |
+| Prompt    | What is your check-in date? |
+
+2. Mark as required.
+
+---
+
+## Add Retry Prompt
+
+```text id="nt4vg7"
+Please provide a valid date (e.g., 2026-03-25)
+```
+
+Save slot.
+
+---
+
+# Step 9: Create Number of Nights Slot
+
+1. Add another slot.
+
+| Field     | Value                          |
+| --------- | ------------------------------ |
+| Slot Name | nights                         |
+| Slot Type | AMAZON.Number                  |
+| Prompt    | How many nights will you stay? |
+
+2. Mark as required.
+3. Save.
+
+---
+
+# Step 10: Create Custom Slot Type
+
+1. Save intent.
+2. Go to:
+
+   * Slot Types
+3. Click:
+
+   * Add Slot Type → Add Blank Slot Type
+
+---
+
+## Configure Custom Slot
+
+| Field          | Value    |
+| -------------- | -------- |
+| Slot Type Name | RoomType |
+
+Add values:
+
+```text id="vnjm9g"
+Single
+Double
+Suite
+```
+
+Save slot type.
+
+---
+
+# Step 11: Use Custom Slot in Intent
+
+1. Return to:
+
+   * BookHotel Intent
+2. Add slot:
+
+| Field     | Value    |
+| --------- | -------- |
+| Slot Name | roomtype |
+| Slot Type | RoomType |
+
+Save changes.
+
+---
+
+# Step 12: Add Response Cards
+
+1. Go to:
+
+   * Slot Prompts → More Prompt Options
+2. Click:
+
+   * Add → Add Card Groups
+
+---
+
+## Configure Card Group
+
+| Field      | Value            |
+| ---------- | ---------------- |
+| Card Title | Select Room Type |
+
+Add buttons:
+
+| Button | Value  |
+| ------ | ------ |
+| Single | Single |
+| Double | Double |
+| Suite  | Suite  |
+
+Save card group.
+
+---
+
+# Step 13: Configure Bot Responses
+
+## Initial Response
+
+```text id="0dgkvi"
+Welcome to Hotel Booking! What is your name?
+```
+
+---
+
+## Confirmation Prompt
+
+```text id="6g8o6g"
+Do you want to confirm booking in {location} for {nights} nights?
+```
+
+Save responses.
+
+---
+
+# Step 14: Build the Bot
+
+1. Click:
+
+   * Build
+2. Wait until build completes successfully.
+
+---
+
+# Step 15: Test the Chatbot
+
+1. Open:
+
+   * Test Chatbot Panel
+2. Test conversation:
+
+```text id="t4g0eq"
+User: Book a hotel
+Bot: What is your age?
+User: 25
+Bot: Which city do you want?
+User: Hyderabad
+Bot: Check-in date?
+User: Tomorrow
+Bot: Number of nights?
+User: 2
+Bot: Select room type
+User: Double
+Bot: Do you want to confirm booking in Hyderabad for 2 nights?
+User: Yes
+Bot: Booking confirmed.
+```
+
+---
+
+# Observation
+
+* Amazon Lex bot created successfully.
+* Intents and slots captured user information correctly.
+* Conditional branching validated user eligibility.
+* Custom slot types and response cards improved interaction.
+* Chatbot successfully handled multi-turn hotel booking conversation. 
+
+---
+
+# Result
+
+Successfully created and tested a hotel booking chatbot using Amazon Lex with intents, slots, conditional logic, custom slot types, and conversational responses. 
