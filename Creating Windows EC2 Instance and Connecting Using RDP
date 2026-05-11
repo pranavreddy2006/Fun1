@@ -1,0 +1,42 @@
+Procedure
+Step 1: Launch Windows EC2 Instance
+Open AWS Console.
+Go to EC2 → Launch Instance.
+Select Windows Server AMI.
+Choose instance type.
+Create/select key pair.
+Configure Security Group:
+Allow RDP
+Port 3389
+Source My IP
+Launch instance.
+Step 2: Obtain Public IP/DNS
+Go to EC2 → Instances.
+Select Windows instance.
+Copy Public IP or DNS.
+Step 3: Retrieve Administrator Password
+Select instance.
+Click:
+Connect → RDP Client
+Click Get Password.
+Upload .pem file.
+Click Decrypt Password.
+Copy generated Administrator password.
+Step 4: Connect Using Remote Desktop
+Open Remote Desktop Connection (mstsc).
+Enter Public IP/DNS.
+Click Connect.
+Login using:
+Username: Administrator
+Password: decrypted password
+Step 5: Verify Connection
+Windows desktop appears.
+Use instance like normal Windows system.
+Observation
+Windows EC2 instance launched successfully.
+RDP port 3389 enabled.
+Administrator password decrypted using key pair.
+Remote Desktop connection established successfully.
+Result
+
+Successfully created a Windows EC2 instance and connected securely using Remote Desktop Protocol (RDP).
