@@ -1,0 +1,200 @@
+# Experiment: Deployment of Application Using AWS Elastic Beanstalk
+
+## Aim
+
+To deploy and manage a web application using AWS Elastic Beanstalk by automatically provisioning infrastructure such as EC2 instances, Load Balancer, Auto Scaling Group, and Security Groups.
+
+---
+
+# Procedure
+
+## Step 1: Open Elastic Beanstalk
+
+1. Login to Amazon Web Services AWS Management Console.
+2. In the search bar type:
+
+   ```text
+   Elastic Beanstalk
+   ```
+3. Open:
+
+   * AWS Elastic Beanstalk
+4. Click:
+
+   * Create Application
+
+---
+
+# Step 2: Create Application
+
+1. Enter:
+
+   * Application Name:
+
+     ```text
+     MyApp
+     ```
+2. Optionally add description.
+3. Click:
+
+   * Create
+
+---
+
+# Step 3: Create Environment
+
+1. Click:
+
+   * Create Environment
+2. Select:
+
+   * Web Server Environment
+3. Click:
+
+   * Select
+
+---
+
+# Step 4: Configure Environment
+
+1. Enter:
+
+   * Environment Name
+2. Select Platform according to application type:
+
+| Application Type | Platform |
+| ---------------- | -------- |
+| Java WAR File    | Tomcat   |
+| Node.js App      | Node.js  |
+| Python App       | Python   |
+| PHP App          | PHP      |
+
+3. Under Application Code:
+
+   * Select:
+
+     ```text
+     Upload your code
+     ```
+4. Upload:
+
+   * `.war`
+   * `.zip`
+   * application package
+
+---
+
+# Step 5: Configure Service Access
+
+1. Under Service Role:
+
+   * Select:
+
+     ```text
+     LabRole
+     ```
+2. EC2 Key Pair:
+
+   * Optional
+3. EC2 Instance Profile:
+
+   * Select:
+
+     ```text
+     LabInstanceProfile
+     ```
+
+---
+
+# Step 6: Configure Network
+
+1. Select VPC:
+
+   * Default VPC
+2. Select required subnets.
+3. Enable:
+
+   * Public IP Address
+
+---
+
+# Step 7: Configure Instance and Scaling
+
+1. Select Instance Type:
+
+| Field         | Value    |
+| ------------- | -------- |
+| Instance Type | t2.micro |
+
+2. Configure Scaling:
+
+| Parameter         | Value |
+| ----------------- | ----- |
+| Minimum Instances | 1     |
+| Maximum Instances | 2     |
+
+3. Enable:
+
+   * Load Balancer (recommended)
+
+---
+
+# Step 8: Review and Create Environment
+
+1. Review all configurations.
+2. Click:
+
+   * Create
+
+AWS automatically provisions:
+
+* EC2 instances
+* Auto Scaling Group
+* Load Balancer
+* Security Groups
+
+---
+
+# Step 9: Wait for Deployment
+
+1. Wait until environment health becomes:
+
+   ```text
+   Healthy
+   ```
+2. Environment creation may take several minutes.
+
+---
+
+# Step 10: Access the Application
+
+1. After deployment, Elastic Beanstalk provides a URL.
+2. Open the URL in browser.
+3. Verify application runs successfully.
+
+---
+
+# Step 11: Update the Application
+
+1. Open Elastic Beanstalk Environment.
+2. Click:
+
+   * Upload and Deploy
+3. Upload updated application package.
+4. Deploy new version.
+
+---
+
+# Observation
+
+* Elastic Beanstalk environment created successfully.
+* AWS automatically provisioned EC2, Load Balancer, Auto Scaling Group, and networking resources.
+* Application deployed successfully using uploaded package.
+* Application accessible through generated Elastic Beanstalk URL.
+* Updated versions deployed successfully using Upload and Deploy feature.
+
+---
+
+# Result
+
+Successfully deployed and managed a web application using AWS Elastic Beanstalk with automatic provisioning, scaling, load balancing, and environment management.
