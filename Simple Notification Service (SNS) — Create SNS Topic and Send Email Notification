@@ -1,0 +1,62 @@
+Aim
+
+To create an Amazon SNS topic, subscribe an email endpoint, and publish notifications through email using Amazon SNS.
+
+Procedure
+Step 1: Create SNS Topic
+Login to Amazon Web Services AWS Management Console.
+Search:
+SNS
+Open:
+Amazon SNS
+In left panel click:
+Topics
+Click:
+Create Topic
+Step 2: Configure Topic
+Select:
+Standard Topic
+
+Enter:
+
+MyEmailTopic
+Leave remaining settings as default.
+Click:
+Create Topic
+Step 3: Create Email Subscription
+Open created SNS topic.
+Go to:
+Subscriptions
+Click:
+Create Subscription
+Configure:
+Field	Value
+Protocol	Email
+Endpoint	Your Email Address
+Click:
+Create Subscription
+Step 4: Confirm Subscription
+Open email inbox.
+Open mail received from Amazon SNS.
+Click:
+Confirm Subscription
+
+Subscription becomes active.
+
+Step 5: Publish Test Message
+Open SNS Topic.
+Click:
+Publish Message
+Configure:
+Field	Value
+Subject	Test Mail
+Message	Hello this is SNS test
+Click:
+Publish Message
+Observation
+SNS topic created successfully.
+Email subscription confirmed.
+Test notification email received successfully.
+Result
+
+Successfully created an SNS topic, subscribed an email endpoint, and sent notifications through Amazon SNS.
