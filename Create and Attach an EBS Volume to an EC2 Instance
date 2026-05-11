@@ -1,0 +1,48 @@
+Experiment 1(a): Create and Attach an EBS Volume to an EC2 Instance
+Aim
+
+To create an Amazon EBS volume and attach it to an existing EC2 instance for additional storage.
+
+Procedure
+Step 1: Open EC2 Dashboard
+Login to Amazon Web Services AWS Management Console.
+Open EC2 Dashboard.
+In the left menu select:
+Elastic Block Store → Volumes
+Step 2: Create New EBS Volume
+Click Create Volume.
+Configure:
+Volume Type: gp3
+Size: 10 GB (or required size)
+Availability Zone: Same AZ as EC2 instance
+Click Create Volume.
+Step 3: Attach Volume to EC2 Instance
+Select newly created volume.
+Click:
+Actions → Attach Volume
+Select target EC2 instance.
+
+Enter device name:
+
+/dev/xvdf
+Click Attach Volume.
+Step 4: Connect to EC2 Instance
+
+Use SSH:
+
+ssh -i key.pem ec2-user@public-ip
+Step 5: Verify Attached Volume
+
+Run:
+
+lsblk
+
+You should see newly attached disk.
+
+Observation
+EBS volume created successfully.
+Volume attached to EC2 instance.
+New block storage device visible using lsblk.
+Result
+
+Successfully created and attached an EBS volume to the EC2 instance.
