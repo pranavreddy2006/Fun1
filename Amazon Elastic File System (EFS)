@@ -1,0 +1,203 @@
+# Experiment: Amazon Elastic File System (EFS)
+
+## Aim
+
+To create an Amazon EFS file system, attach it to multiple EC2 instances, and verify shared file access between the instances. 
+
+---
+
+# Procedure
+
+## Step 1: Launch EC2 Instances
+
+### Create First EC2 Instance
+
+1. Login to Amazon Web Services AWS Management Console.
+2. Open EC2 Dashboard.
+3. Click **Launch Instance**.
+4. Configure:
+
+   * Instance Name: `EFS-1`
+   * AMI: Amazon Linux
+   * Instance Type: `t2.micro`
+5. Select or create key pair.
+6. Under Network Settings:
+
+   * Select VPC
+   * Choose Subnet-1a
+7. Create a Security Group:
+
+   * Allow SSH (Port 22)
+   * Allow NFS (Port 2049)
+8. Click **Launch Instance**.
+
+---
+
+### Create Second EC2 Instance
+
+1. Repeat the same process.
+2. Configure:
+
+   * Instance Name: `EFS-2`
+   * Choose Subnet-1b
+3. Use same Security Group.
+4. Launch instance.
+
+---
+
+# Step 2: Create EFS File System
+
+1. Open EFS Dashboard.
+2. Click **Create File System**.
+3. Configure:
+
+   * VPC: Default VPC
+   * Enable Regional Storage
+4. Click **Next**.
+
+---
+
+## Step 3: Configure Network Settings
+
+1. Remove default security groups.
+2. Select the Security Group created earlier with:
+
+   * NFS Port 2049 allowed
+3. Click **Next**.
+4. Review configuration.
+5. Click **Create File System**.
+
+---
+
+# Step 4: Connect to EC2 Instances
+
+## Connect to EFS-1
+
+Use SSH:
+
+```bash id="f2l7x8"
+ssh -i key.pem ec2-user@public-ip
+```
+
+---
+
+## Connect to EFS-2
+
+Open another terminal and connect:
+
+```bash id="g8k9z0"
+ssh -i key.pem ec2-user@public-ip
+```
+
+---
+
+# Step 5: Switch to Root User
+
+Run on both instances:
+
+```bash id="l3p6v1"
+sudo su
+```
+
+---
+
+# Step 6: Create Mount Directory
+
+Run on both instances:
+
+```bash id="x5w9q2"
+mkdir /efs
+```
+
+---
+
+# Step 7: Install Amazon EFS Utilities
+
+Run on both instances:
+
+```bash id="b7t2m4"
+yum install -y amazon-efs-utils
+```
+
+Verify installation:
+
+```bash id="e1r5u7"
+rpm -qa | grep amazon-efs-utils
+```
+
+---
+
+# Step 8: Mount EFS File System
+
+1. Go to EFS Dashboard.
+2. Select created EFS File System.
+3. Click **Attach**.
+4. Choose:
+
+   * Mount via DNS
+5. Copy mount command.
+
+Example:
+
+```bash id="u0n4s6"
+mount -t efs fs-xxxxxxxx:/ /efs
+```
+
+6. Run the command on both EC2 instances.
+
+---
+
+# Step 9: Verify Mount
+
+Run on both instances:
+
+```bash id="m8j3c5"
+df -h
+```
+
+EFS mount should appear.
+
+---
+
+# Step 10: Test Shared File Access
+
+## On EFS-1 Instance
+
+Run:
+
+```bash id="a2d7f9"
+cd /efs
+touch file1.txt
+```
+
+---
+
+## On EFS-2 Instance
+
+Run:
+
+```bash id="p4q8k1"
+cd /efs
+ls
+```
+
+You should see:
+
+```bash id="y6z0n3"
+file1.txt
+```
+
+---
+
+# Observation
+
+* Two EC2 instances were launched successfully.
+* EFS file system created and mounted successfully.
+* Both EC2 instances accessed the same shared storage.
+* File created on one instance appeared automatically on the other instance. 
+
+---
+
+# Result
+
+Successfully created and configured Amazon EFS and mounted it on multiple EC2 instances, enabling shared and synchronized file access across instances. 
