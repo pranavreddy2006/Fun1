@@ -1,0 +1,36 @@
+Experiment 1(b): Scale EC2 Instance by Changing Instance Type
+Aim
+
+To increase or decrease CPU and RAM resources of an EC2 instance by modifying the instance type.
+
+Procedure
+Step 1: Open EC2 Dashboard
+Go to EC2 → Instances.
+Select the required EC2 instance.
+Step 2: Stop the Instance
+Click:
+Instance State → Stop Instance
+Wait until instance status becomes Stopped.
+Step 3: Change Instance Type
+Click:
+Actions → Instance Settings → Change Instance Type
+Select a higher/lower instance type.
+Example:
+t2.micro → t2.small
+Step 4: Apply Changes
+Click Apply or Save.
+Step 5: Restart Instance
+Click:
+Instance State → Start Instance
+Step 6: Verify New Configuration
+Open instance details.
+Check updated:
+vCPU
+RAM
+Performance
+Observation
+Instance stopped and restarted successfully.
+CPU and RAM configuration changed according to selected instance type.
+Result
+
+Successfully scaled the EC2 instance by changing the instance type and increasing/decreasing CPU and RAM resources.
