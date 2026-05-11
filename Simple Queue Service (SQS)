@@ -1,0 +1,416 @@
+Aim
+To create an Amazon SQS queue, send messages to the queue, and receive messages from the queue. 
+
+Procedure
+Step 1: Create SQS Queue
+
+
+Open:
+
+
+Amazon SQS
+
+
+
+
+Click:
+
+
+Create Queue
+
+
+
+
+Configure:
+
+
+FieldValueQueue TypeStandardQueue NameMyQueue
+
+
+Click:
+
+
+Create Queue
+
+
+
+
+
+Step 2: Send Message to Queue
+
+
+Open queue:
+MyQueue
+
+
+Click:
+
+
+Send and Receive Messages
+
+
+
+
+Enter message:
+
+
+Hello this is SQS test message
+
+
+Click:
+
+
+Send Message
+
+
+
+
+
+Step 3: Receive Message
+
+
+Click:
+
+
+Poll for Messages
+
+
+
+
+View received message.
+
+
+Optionally click:
+
+
+Delete Message
+
+
+
+
+
+Observation
+
+
+SQS queue created successfully.
+
+
+Message stored in queue successfully.
+
+
+Message received successfully from queue. 
+
+
+
+Result
+Successfully created an SQS queue and verified sending and receiving messages using Amazon SQS. 
+
+Experiment 4: S3 → SNS → SQS → Lambda Architecture
+Aim
+To implement a serverless event-driven architecture where S3 uploads trigger SNS notifications, messages are stored in SQS, and processed automatically by AWS Lambda. 
+
+Procedure
+Step 1: Create S3 Bucket
+
+
+Open Amazon S3.
+
+
+Click:
+
+
+Create Bucket
+
+
+
+
+Configure:
+
+
+FieldValueBucket Namemys3eventbucket123RegionYour AWS Region
+
+
+Create bucket.
+
+
+
+Step 2: Create SNS Topic
+
+
+Open Amazon SNS.
+
+
+Click:
+
+
+Create Topic
+
+
+
+
+Configure:
+
+
+FieldValueTypeStandardNameMyS3SNSTopic
+
+
+Create topic.
+
+
+Copy Topic ARN.
+
+
+
+Step 3: Create SQS Queue
+
+
+Open Amazon SQS.
+
+
+Click:
+
+
+Create Queue
+
+
+
+
+Configure:
+
+
+FieldValueTypeStandardNameMyS3Queue
+
+
+Create queue.
+
+
+Copy Queue ARN.
+
+
+
+Step 4: Subscribe SQS to SNS
+
+
+Open SNS Topic.
+
+
+Click:
+
+
+Create Subscription
+
+
+
+
+Configure:
+
+
+FieldValueProtocolAmazon SQSEndpointMyS3Queue
+
+
+Create subscription.
+
+
+
+Step 5: Configure SQS Access Policy
+
+
+Open SQS Queue.
+
+
+Edit Access Policy.
+
+
+Allow SNS to send messages to SQS queue.
+
+
+Save policy.
+
+
+
+Step 6: Configure SNS Access Policy
+
+
+Open SNS Topic.
+
+
+Edit Access Policy.
+
+
+Allow S3 bucket to publish to SNS topic.
+
+
+Save policy.
+
+
+
+Step 7: Configure S3 Event Notification
+
+
+Open S3 Bucket.
+
+
+Go to:
+
+
+Properties → Event Notifications
+
+
+
+
+Click:
+
+
+Create Event Notification
+
+
+
+
+
+Configure
+FieldValueEvent NameS3UploadEventEvent TypeAll Object Create EventsDestinationSNS Topic
+
+
+Select:
+MyS3SNSTopic
+
+
+Save changes.
+
+
+
+Step 8: Test Event Flow
+
+
+Upload file into S3 bucket.
+
+
+Flow occurs automatically:
+
+
+S3 → SNS → SQS
+
+Step 9: Verify Messages in SQS
+
+
+Open SQS Queue.
+
+
+Click:
+
+
+Poll for Messages
+
+
+
+
+Verify S3 event notification appears.
+
+
+
+Step 10: Create Lambda Function
+
+
+Open AWS Lambda.
+
+
+Click:
+
+
+Create Function
+
+
+
+
+Configure:
+
+
+FieldValueFunction NameSQSConsumerFunctionRuntimePython 3.x
+
+
+Create function.
+
+
+
+Step 11: Add SQS Trigger to Lambda
+
+
+Open Lambda function.
+
+
+Click:
+
+
+Add Trigger
+
+
+
+
+Select:
+
+
+SQS
+
+
+
+
+Choose:
+MyS3Queue
+
+
+Add trigger.
+
+
+
+Step 12: Add Lambda Code
+Replace default code with:
+def lambda_handler(event, context):    for record in event['Records']:        print("Message received from SQS:")        print(record['body'])    return {        'statusCode': 200,        'body': 'Message processed successfully'    }
+Click:
+
+
+Deploy
+
+
+
+Step 13: Verify Lambda Processing
+
+
+Upload file into S3 bucket.
+
+
+Verify:
+
+
+SNS notification triggered
+
+
+Message stored in SQS
+
+
+Lambda processed message automatically
+
+
+
+
+Check Lambda logs in CloudWatch.
+
+
+
+Observation
+
+
+S3 bucket events successfully triggered SNS notifications.
+
+
+SNS forwarded messages to SQS queue.
+
+
+SQS stored event messages reliably.
+
+
+Lambda automatically consumed and processed messages from SQS queue. 
+
+
+
+Result
+Successfully implemented a serverless event-driven architecture using Amazon S3, SNS, SQS, and AWS Lambda for automated notification and asynchronous message processing. 
