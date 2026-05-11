@@ -1,0 +1,61 @@
+Aim
+
+To create an Amazon S3 bucket, upload an object, and enable public access to the uploaded file using bucket-level and object-level permissions.
+
+Procedure
+Step 1: Open Amazon S3
+Login to Amazon Web Services AWS Management Console.
+Go to:
+Services → S3
+Click Create Bucket.
+Step 2: Configure Bucket
+
+Enter Bucket Name:
+
+my-public-bucket-123
+Choose nearest AWS region.
+Step 3: Disable Block Public Access
+Under Block Public Access settings:
+Uncheck Block all public access
+Acknowledge warning.
+Click Create Bucket.
+Step 4: Enable Bucket-Level Public Access
+Open created bucket.
+Go to:
+Permissions tab
+Scroll to:
+Access Control List (ACL)
+Click Edit.
+Under Public Access:
+Enable:
+Everyone (public access) → Read
+Save changes.
+Step 5: Upload Object
+Open:
+Objects tab
+Click Upload.
+Click Add Files.
+Select file.
+Click Upload.
+Step 6: Enable Object-Level Public Access
+Open uploaded object.
+Go to:
+Permissions
+Scroll to:
+Access Control List (ACL)
+Click Edit.
+Enable:
+Everyone (public access) → Read
+Save changes.
+Step 7: Verify Public Access
+Copy object URL.
+Open URL in browser/incognito mode.
+Verify file opens without AWS login.
+Observation
+S3 bucket created successfully.
+Public access permissions enabled.
+File uploaded successfully.
+Uploaded object became publicly accessible through URL.
+Result
+
+Successfully created an S3 bucket, uploaded an object, and enabled public access using ACL permissions.
