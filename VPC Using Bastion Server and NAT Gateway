@@ -1,0 +1,383 @@
+Aim
+To create a secure VPC architecture using a Bastion Server and NAT Gateway for accessing private EC2 instances and enabling internet connectivity for instances in private subnets.
+
+Procedure
+Part A — VPC Creation and Subnet Design
+Step 1: Create VPC
+
+
+Login to Amazon Web Services AWS Management Console.
+
+
+Go to:
+
+
+Services → VPC
+
+
+
+
+Click Create VPC.
+
+
+Select:
+
+
+VPC only
+
+
+
+
+Configure:
+
+
+Name:
+Custom-VPC
+
+
+IPv4 CIDR:
+10.0.0.0/16
+
+
+
+
+Click Create VPC.
+
+
+
+Step 2: Create Public and Private Subnets
+Public Subnet (Bastion)
+
+
+Go to:
+
+
+Subnets → Create Subnet
+
+
+
+
+Configure:
+
+
+Name:
+Public-Subnet
+
+
+CIDR:
+10.0.1.0/24
+
+
+
+
+Select same Availability Zone.
+
+
+Create subnet.
+
+
+
+Private Subnet (Database Server)
+
+
+Create another subnet.
+
+
+Configure:
+
+
+Name:
+Private-Subnet
+
+
+CIDR:
+10.0.2.0/24
+
+
+
+
+Create subnet.
+
+
+
+Step 3: Create Internet Gateway
+
+
+Open:
+
+
+Internet Gateways
+
+
+
+
+Click:
+
+
+Create Internet Gateway
+
+
+
+
+Name:
+Custom-IGW
+
+
+Create IGW.
+
+
+Attach it to Custom-VPC.
+
+
+
+Step 4: Configure Route Tables
+Public Route Table
+
+
+Create Route Table:
+Public-RT
+
+
+Add Route:
+
+
+DestinationTarget0.0.0.0/0Internet Gateway
+
+
+Associate with:
+
+
+Public Subnet
+
+
+
+
+
+Private Route Table
+
+
+Create Route Table:
+Private-RT
+
+
+Associate with:
+
+
+Private Subnet
+
+
+
+
+Keep only local route initially.
+
+
+
+Part B — Configure Security Groups
+Step 5: Bastion Server Security Group
+Create Security Group:
+RulePortSourceSSH22My IP
+Attach to Bastion Server.
+
+Step 6: Database Server Security Group
+Create another Security Group:
+RulePortSourceMySQL/Aurora330610.0.1.0/24SSH22Bastion Private IP
+Do NOT allow public access.
+
+Part C — Launch EC2 Instances
+Step 7: Launch Bastion Server
+
+
+Launch EC2 Instance.
+
+
+Configure:
+
+
+Name:
+Bastion-Server
+
+
+AMI: Ubuntu
+
+
+Subnet: Public Subnet
+
+
+Auto Assign Public IP: Enabled
+
+
+
+
+Select/Create key pair:
+bastion.pem
+
+
+Attach Bastion Security Group.
+
+
+Launch instance.
+
+
+
+Step 8: Launch Database Server
+
+
+Launch another EC2 instance.
+
+
+Configure:
+
+
+Name:
+DB-Server
+
+
+AMI: Ubuntu
+
+
+Subnet: Private Subnet
+
+
+No Public IP
+
+
+
+
+Select key pair:
+dbserver.pem
+
+
+Attach Database Security Group.
+
+
+Launch instance.
+
+
+
+Part D — Access Private EC2 Through Bastion Server
+Step 9: Copy DB Key to Bastion Server
+From local PowerShell:
+scp -i bastion.pem dbserver.pem ubuntu@<BASTION_PUBLIC_IP>:/home/ubuntu/
+
+Step 10: Connect to Bastion Server
+Run:
+ssh -i bastion.pem ubuntu@<BASTION_PUBLIC_IP>
+Verify files:
+ls
+Output:
+bastion.pemdbserver.pem
+
+Step 11: Connect from Bastion to Database Server
+From Bastion terminal:
+ssh -i dbserver.pem ubuntu@10.0.2.x
+Connection to private database server becomes successful.
+
+Part E — Configure NAT Gateway
+Step 12: Create NAT Gateway
+
+
+Go to:
+
+
+NAT Gateways
+
+
+
+
+Click:
+
+
+Create NAT Gateway
+
+
+
+
+Configure:
+
+
+Name:
+Custom-NAT
+
+
+Subnet:
+
+
+Public Subnet
+
+
+
+
+
+
+Allocate Elastic IP.
+
+
+Click Create NAT Gateway.
+
+
+
+Step 13: Configure Route Table for NAT
+
+
+Go to:
+
+
+Route Tables
+
+
+
+
+Select:
+
+
+Private-RT
+
+
+
+
+Click:
+
+
+Routes → Edit Routes
+
+
+
+
+Add Route:
+
+
+DestinationTarget0.0.0.0/0NAT Gateway
+
+
+Save changes.
+
+
+
+Step 14: Verify Internet Access in Private EC2
+Connect to private EC2 through Bastion and run:
+sudo apt update
+or
+ping google.com
+Internet access should now work successfully.
+
+Observation
+
+
+VPC with public and private subnets created successfully.
+
+
+Bastion server accessible from local machine.
+
+
+Private EC2 instance securely accessed through Bastion server.
+
+
+NAT Gateway enabled outbound internet access for private subnet instances.
+
+
+Database server remained inaccessible directly from the internet.
+
+
+
+Result
+Successfully created a secure VPC architecture using a Bastion Server and NAT Gateway, enabling secure SSH access to private EC2 instances and controlled internet connectivity for private subnet resources.
