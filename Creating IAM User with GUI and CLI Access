@@ -1,0 +1,286 @@
+# Experiment: Creating IAM User with GUI and CLI Access
+
+## Aim
+
+To create an IAM user with restricted permissions, access AWS services using the AWS Management Console (GUI), and configure AWS CLI for programmatic access using access keys.
+
+---
+
+# Procedure
+
+# Part A — GUI Access (AWS Management Console)
+
+## Objective
+
+To create an IAM user with limited permissions and verify restricted access through the AWS web console.
+
+---
+
+# Step 1: Login as Root User
+
+1. Login to Amazon Web Services AWS Management Console using Root User credentials.
+
+---
+
+# Step 2: Open IAM Service
+
+1. Search:
+
+   ```text
+   IAM
+   ```
+2. Open:
+
+   * Identity and Access Management (IAM)
+
+---
+
+# Step 3: Create IAM User
+
+1. Go to:
+
+   * Users
+2. Click:
+
+   * Create User
+
+---
+
+# Step 4: Configure User Details
+
+1. Enter User Name:
+
+```text id="4cjjqm"
+S3_Specialist
+```
+
+2. Enable:
+
+   * Provide user access to the AWS Management Console
+3. Select:
+
+   * Custom Password
+4. Enter password.
+
+---
+
+# Step 5: Attach Permissions
+
+1. Select:
+
+   * Attach policies directly
+2. Search for policy:
+
+```text id="cnb0jk"
+AmazonS3FullAccess
+```
+
+3. Select policy checkbox.
+4. Click:
+
+   * Next
+
+---
+
+# Step 6: Review and Create User
+
+1. Review all configurations.
+2. Click:
+
+   * Create User
+3. Download `.csv` file containing:
+
+   * Sign-in URL
+   * Username
+   * Password
+
+---
+
+# Step 7: Sign Out Root User
+
+1. Copy:
+
+   * 12-digit Account ID
+2. Sign out from Root Account.
+
+---
+
+# Step 8: Login as IAM User
+
+1. Open Sign-in URL from `.csv`.
+2. Enter:
+
+   * Account ID
+   * IAM Username
+   * Password
+
+Successfully login as IAM User.
+
+---
+
+# Step 9: Verify Restricted Permissions
+
+## Test EC2 Access
+
+1. Open:
+
+   * EC2 Dashboard
+2. Attempt to view instances.
+
+Expected Result:
+
+```text id="2f67x0"
+Access Denied / API Error
+```
+
+---
+
+## Test S3 Access
+
+1. Open:
+
+   * Amazon S3
+2. Create a new S3 bucket.
+
+Expected Result:
+
+* Bucket creation successful.
+
+---
+
+# Part B — CLI Access (Programmatic Access)
+
+## Objective
+
+To configure AWS CLI using IAM access keys and verify access permissions through terminal commands.
+
+---
+
+# Step 10: Create Access Keys
+
+1. Login as Admin/Root User.
+2. Open:
+
+   * IAM → Users
+3. Select created IAM User.
+4. Open:
+
+   * Security Credentials Tab
+5. Scroll to:
+
+   * Access Keys
+6. Click:
+
+   * Create Access Key
+
+---
+
+# Step 11: Configure CLI Access
+
+1. Select:
+
+   * Command Line Interface (CLI)
+2. Acknowledge warning.
+3. Click:
+
+   * Next
+4. Download `.csv` file containing:
+
+   * Access Key ID
+   * Secret Access Key
+
+---
+
+# Step 12: Install AWS CLI
+
+1. Download and install AWS CLI from official AWS website.
+2. Verify installation:
+
+```bash id="b35hrk"
+aws --version
+```
+
+---
+
+# Step 13: Configure AWS CLI
+
+1. Open Command Prompt / Terminal.
+2. Run:
+
+```bash id="ivv3kx"
+aws configure
+```
+
+3. Enter details:
+
+| Field                 | Value      |
+| --------------------- | ---------- |
+| Access Key ID         | From CSV   |
+| Secret Access Key     | From CSV   |
+| Default Region        | ap-south-1 |
+| Default Output Format | json       |
+
+---
+
+# Step 14: Verify CLI Access
+
+## List S3 Buckets
+
+Run:
+
+```bash id="w05sdm"
+aws s3 ls
+```
+
+Expected Result:
+
+* Existing S3 buckets displayed.
+
+---
+
+## Create New Bucket
+
+Run:
+
+```bash id="5r0w6x"
+aws s3 mb s3://your-unique-bucket-name
+```
+
+Expected Result:
+
+* Bucket created successfully.
+
+---
+
+## Test Restricted IAM Access
+
+Run:
+
+```bash id="22wjlwm"
+aws iam list-users
+```
+
+Expected Result:
+
+```text id="50epfd"
+AccessDenied
+```
+
+This confirms IAM restrictions are applied in CLI as well.
+
+---
+
+# Observation
+
+* IAM user created successfully with restricted S3 permissions.
+* IAM user successfully accessed AWS Console.
+* Access to EC2 service was denied due to permission restrictions.
+* AWS CLI configured successfully using access keys.
+* S3 operations worked correctly through CLI.
+* IAM commands were denied according to attached IAM policy.
+
+---
+
+# Result
+
+Successfully created an IAM user with restricted permissions and verified access through both AWS Management Console (GUI) and AWS CLI using programmatic access keys.
