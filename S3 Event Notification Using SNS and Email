@@ -1,0 +1,60 @@
+Aim
+
+To configure Amazon S3 bucket event notifications that trigger Amazon SNS and send email alerts whenever an object is uploaded to the bucket.
+
+Procedure
+Step 1: Create S3 Bucket
+Open:
+Amazon S3
+Click:
+Create Bucket
+Configure:
+Field	Value
+Bucket Name	my-upload-bucket-2026
+Region	Same region as SNS
+Click:
+Create Bucket
+Step 2: Create SNS Topic
+Open Amazon SNS.
+
+Create Topic:
+
+S3UploadNotification
+Add Email Subscription.
+Confirm email subscription.
+Step 3: Configure SNS Access Policy
+Open SNS Topic.
+Go to:
+Access Policy → Edit
+Allow S3 service to publish notifications to SNS topic.
+Save policy.
+Step 4: Configure S3 Event Notification
+Open S3 Bucket.
+Go to:
+Properties
+Scroll to:
+Event Notifications
+Click:
+Create Event Notification
+Configure Event
+Field	Value
+Event Name	UploadNotification
+Event Type	All Object Create Events
+Destination	SNS Topic
+
+Select SNS topic:
+
+S3UploadNotification
+Save changes.
+Step 5: Test the Setup
+Upload any file into S3 bucket.
+Verify:
+S3 triggers SNS notification
+Email notification received
+Observation
+S3 bucket created successfully.
+SNS notifications configured correctly.
+Uploading object triggered email notification automatically.
+Result
+
+Successfully configured S3 event notifications using SNS to send email alerts when files are uploaded to an S3 bucket.
