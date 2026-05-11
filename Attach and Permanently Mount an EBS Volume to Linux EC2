@@ -1,0 +1,125 @@
+Aim
+
+To attach an EBS volume to a Linux EC2 instance and permanently mount it so that data persists across reboots.
+
+Procedure
+Step 1: Create EBS Volume
+Open EC2 Dashboard.
+Go to:
+Volumes → Create Volume
+Configure:
+Type: gp3
+Size: 20 GB
+Same Availability Zone as EC2
+Click Create Volume.
+Step 2: Attach Volume
+Select created volume.
+Click:
+Actions → Attach Volume
+Choose EC2 instance.
+
+Device name:
+
+/dev/xvdf
+Click Attach.
+Step 3: Connect to EC2
+
+Use SSH:
+
+ssh -i key.pem ec2-user@public-ip
+Step 4: Verify Disk
+
+Run:
+
+lsblk
+
+New disk appears as:
+
+/dev/nvme1n1
+Step 5: Create Partition
+
+Run:
+
+sudo fdisk /dev/nvme1n1
+
+Inside fdisk:
+
+Press n
+Press p
+Press Enter for defaults
+Press w
+
+Then run:
+
+sudo partprobe
+Step 6: Verify Partition
+
+Run:
+
+lsblk
+
+Partition appears as:
+
+/dev/nvme1n1p1
+Step 7: Format Partition
+
+Run:
+
+sudo mkfs.xfs /dev/nvme1n1p1
+Step 8: Create Mount Directory
+
+Run:
+
+sudo mkdir /mnt/archana
+Step 9: Mount Volume
+
+Run:
+
+sudo mount /dev/nvme1n1p1 /mnt/archana
+
+Verify:
+
+df -h
+Step 10: Make Mount Permanent
+
+Get UUID:
+
+sudo blkid /dev/nvme1n1p1
+
+Edit fstab:
+
+sudo nano /etc/fstab
+
+Add line:
+
+UUID=<uuid-value> /mnt/archana xfs defaults,nofail 0 0
+
+Save file.
+
+Step 11: Test Persistent Mount
+
+Run:
+
+sudo mount -a
+
+Create test file:
+
+cd /mnt/archana
+touch f1
+Step 12: Reboot and Verify
+
+Run:
+
+sudo reboot
+
+Reconnect and verify:
+
+df -h
+Observation
+EBS volume attached successfully.
+Partition created and formatted.
+Volume mounted successfully.
+Data remained available after reboot due to persistent mounting using /etc/fstab.
+Result
+
+Successfully attached and permanently mounted an EBS volume to a Linux EC2 instance ensuring data persistence across reboots.
