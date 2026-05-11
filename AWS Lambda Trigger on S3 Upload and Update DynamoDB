@@ -1,0 +1,273 @@
+Aim
+To create an AWS Lambda function that automatically triggers whenever an object is uploaded to an Amazon S3 bucket and stores the uploaded object metadata into a DynamoDB table. 
+
+Procedure
+Step 1: Login to AWS Console
+
+
+Open Amazon Web Services AWS Management Console.
+
+
+Login using AWS credentials. 
+
+
+
+Step 2: Create an S3 Bucket
+
+
+Go to:
+
+
+Services → S3
+
+
+
+
+Click Create Bucket.
+
+
+Enter bucket name.
+
+
+Select AWS region.
+
+
+Click Create Bucket.
+
+
+
+Step 3: Create DynamoDB Table
+
+
+Go to:
+
+
+Services → DynamoDB
+
+
+
+
+Click Create Table.
+
+
+Configure:
+
+
+Table Name:
+newtable2
+
+
+Partition Key:
+unique
+
+
+
+
+Click Create Table.
+
+
+
+Step 4: Open AWS Lambda Console
+
+
+Go to:
+
+
+Services → Lambda
+
+
+
+
+Click Create Function. 
+
+
+
+Step 5: Create Lambda Function
+
+
+Select:
+
+
+Author from scratch
+
+
+
+
+Configure:
+
+
+Function Name:
+S3ToDynamoDB
+
+
+Runtime:
+Python
+
+
+
+
+Under Permissions:
+
+
+Create new role with basic Lambda permissions
+
+
+
+
+Click Create Function. 
+
+
+
+Step 6: Add Lambda Function Code
+Replace default code with:
+import boto3from uuid import uuid4def lambda_handler(event, context):    dynamodb = boto3.resource('dynamodb')    dynamoTable = dynamodb.Table('newtable2')    if 'Records' in event:        for record in event['Records']:            bucket_name = record['s3']['bucket']['name']            object_key = record['s3']['object']['key']            size = record['s3']['object'].get('size', -1)            event_name = record['eventName']            event_time = record['eventTime']            dynamoTable.put_item(                Item={                    'unique': str(uuid4()),                    'Bucket': bucket_name,                    'Object': object_key,                    'Size': size,                    'Event': event_name,                    'EventTime': event_time                }            )    else:        print("No S3 event received")    return {        "statusCode": 200,        "body": "Data stored in DynamoDB"    }
+Click Deploy. 
+
+Step 7: Configure S3 Trigger
+
+
+In Lambda Function Designer section:
+
+
+Click Add Trigger
+
+
+
+
+Select:
+
+
+S3
+
+
+
+
+Configure:
+
+
+Choose created S3 bucket
+
+
+Event Type:
+All object create events
+
+
+
+
+Enable trigger.
+
+
+Click Add. 
+
+
+
+Step 8: Configure Permissions
+
+
+Go to:
+
+
+Configuration → Permissions
+
+
+
+
+Ensure Lambda Role has:
+
+
+S3 access permissions
+
+
+DynamoDB write permissions
+
+
+
+
+
+Step 9: Test the Lambda Function
+
+
+Upload any file into S3 bucket.
+
+
+Example:
+image.png
+
+
+Lambda function triggers automatically.
+
+
+
+Step 10: Verify DynamoDB Entries
+
+
+Open DynamoDB Console.
+
+
+Open table:
+newtable2
+
+
+Click:
+
+
+Explore Table Items
+
+
+
+
+Verify uploaded object details appear in table. 
+
+
+
+Step 11: Monitor Lambda Execution
+
+
+Open Lambda Function.
+
+
+Go to:
+
+
+Monitor tab
+
+
+
+
+View:
+
+
+Invocation count
+
+
+Logs
+
+
+CloudWatch metrics
+
+
+
+
+You can also open CloudWatch logs for troubleshooting. 
+
+Observation
+
+
+S3 bucket created successfully.
+
+
+DynamoDB table created successfully.
+
+
+Lambda function triggered automatically after object upload.
+
+
+Uploaded object metadata stored in DynamoDB table.
+
+
+CloudWatch logs showed successful Lambda execution. 
+
+
+
+Result
+Successfully created an AWS Lambda function that triggers automatically on S3 object uploads and stores uploaded object metadata into a DynamoDB table. 
