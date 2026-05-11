@@ -1,0 +1,78 @@
+Aim
+
+To host a static website using Amazon S3 with public access permissions and custom error handling.
+
+Procedure
+Step 1: Create S3 Bucket
+Open S3 Dashboard.
+Click Create Bucket.
+Configure:
+
+Bucket Name:
+
+my-static-site-bucket-123
+Select nearest region.
+Disable:
+Block all public access
+Create bucket.
+Step 2: Upload Website Files
+Open bucket.
+Go to:
+Objects tab
+Upload:
+index.html
+error.html
+Step 3: Enable Static Website Hosting
+Open:
+Properties tab
+Scroll to:
+Static Website Hosting
+Click Edit.
+Enable hosting.
+Configure:
+
+Index Document:
+
+index.html
+
+Error Document:
+
+error.html
+Save changes.
+Step 4: Enable Bucket-Level Public Access
+Open:
+Permissions → ACL
+Edit permissions.
+Enable:
+Everyone (public access) → Read
+Save changes.
+Step 5: Enable Object-Level Public Access
+For index.html
+Open file.
+Go to:
+Permissions → ACL
+Enable:
+Everyone → Read
+Save.
+Repeat for error.html
+Open error.html.
+Enable public read access.
+Step 6: Access Website
+Open:
+Properties → Static Website Hosting
+Copy Bucket Website Endpoint.
+Open URL in browser.
+Step 7: Test Error Page
+
+Open invalid URL:
+
+http://bucket-name.s3-website-region.amazonaws.com/invalid.html
+Verify custom error page loads.
+Observation
+Static website hosting enabled successfully.
+HTML files uploaded and publicly accessible.
+Website loaded through S3 endpoint.
+Custom error page displayed for invalid URLs.
+Result
+
+Successfully hosted a static website using Amazon S3 with public access and custom error page support.
